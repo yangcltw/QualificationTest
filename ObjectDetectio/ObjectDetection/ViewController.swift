@@ -1,4 +1,5 @@
 import CoreMedia
+import AVFoundation
 import CoreML
 import UIKit
 import Vision
@@ -65,11 +66,13 @@ class ViewController: UIViewController {
     }
   }
 
+  // TODO : refine
   func setUpCamera() {
     videoCapture = VideoCapture()
     videoCapture.delegate = self
-
-    videoCapture.setUp(sessionPreset: .hd1280x720) { success in
+      var options = Dictionary<String, Any>()
+      options["sessionPreset"] = AVCaptureSession.Preset.hd1280x720
+      videoCapture.setUp(with: options) { success in
       if success {
         // Add the video preview into the UI.
         if let previewLayer = self.videoCapture.previewLayer {
@@ -171,6 +174,10 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: VideoCaptureDelegate {
+    func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any) {
+        predict(sampleBuffer: didCaptureVideoFrame as! CMSampleBuffer)
+    }
+    
   func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame sampleBuffer: CMSampleBuffer) {
     predict(sampleBuffer: sampleBuffer)
   }
