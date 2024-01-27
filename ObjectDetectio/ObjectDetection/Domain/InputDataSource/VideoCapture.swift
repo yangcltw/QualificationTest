@@ -2,30 +2,32 @@ import AVFoundation
 import CoreVideo
 import UIKit
 
-public protocol VideoCaptureDelegate: class {
+protocol VideoCaptureDelegate: DataSourceProtocolDelegate {
   func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame: CMSampleBuffer)
 }
 
-public class VideoCapture: NSObject {
+public class VideoCapture: NSObject, DataSourceProtocol {
+  weak var delegate: DataSourceProtocolDelegate?
   public var previewLayer: AVCaptureVideoPreviewLayer?
-  public weak var delegate: VideoCaptureDelegate?
 
   let captureSession = AVCaptureSession()
   let videoOutput = AVCaptureVideoDataOutput()
   let queue = DispatchQueue(label: "net.machinethink.camera-queue")
 
   var lastTimestamp = CMTime()
-
-  public func setUp(sessionPreset: AVCaptureSession.Preset = .medium,
-                    completion: @escaping (Bool) -> Void) {
-    queue.async {
-      let success = self.setUpCamera(sessionPreset: sessionPreset)
-      DispatchQueue.main.async {
-        completion(success)
-      }
+    func setUp(with option: [String : Any], completion: @escaping (Bool) -> Void) {
+        var preset = AVCaptureSession.Preset.medium
+        if let sessionPreset = option["sessionPreset"] as? AVCaptureSession.Preset {
+            preset = sessionPreset
+        }
+        queue.async {
+          let success = self.setUpCamera(sessionPreset: preset)
+          DispatchQueue.main.async {
+            completion(success)
+          }
+        }
     }
-  }
-
+    
   func setUpCamera(sessionPreset: AVCaptureSession.Preset) -> Bool {
     captureSession.beginConfiguration()
     captureSession.sessionPreset = sessionPreset
@@ -83,7 +85,7 @@ public class VideoCapture: NSObject {
 
 extension VideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
   public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-    delegate?.videoCapture(self, didCaptureVideoFrame: sampleBuffer)
+      delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
   }
 
   public func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {

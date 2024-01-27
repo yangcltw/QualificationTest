@@ -34,7 +34,7 @@
 > The data source can be different type of input
 
 - [x] T1 - Design command interface to input data source
-- [ ] T2 - move AVCaptureSession to be an implementation
+- [x] T2 - move AVCaptureSession to be an implementation
 - [ ] T3 - Implement input data source by AVAssetReader
 
 ## Record Video if detect person(s)

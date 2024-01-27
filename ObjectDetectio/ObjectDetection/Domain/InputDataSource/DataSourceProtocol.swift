@@ -13,7 +13,7 @@ protocol DataSourceProtocolDelegate: class {
 
 protocol DataSourceProtocol {
     var delegate: DataSourceProtocolDelegate? { get set }
-    func setUp(with option: Any)
+    func setUp(with option: [String : Any], completion: @escaping (Bool) -> Void)
     func start()
     func stop()
     
