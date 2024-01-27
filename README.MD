@@ -1,0 +1,34 @@
+
+# Clone the sample code from github after getting assignment
+
+- The sample code is using AVCaptureSession to get image from iphone camera，and transfer datat to  AVCaptureVideoDataOutput (https://developer.apple.com/documentation/avfoundation/capture_setup/setting_up_a_capture_session)
+	- In beggining, I try to find if it possible to using file as [AVCaptureInput] (https://stackoverflow.com/questions/24335298/can-i-use-avcapturesession-to-read-a-video-from-a-file). However, the assignment has mention we need use AVAssetReader to extract frame as (CVPixelBuffer), I won't keep going to research this apporach. 
+
+- Using predict() function from ViewController after get image buffer to detect object. Show the boundingBoxViews according to VNRecognizedObjectObservation from predict function. 
+	- There is one option that using kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix to get camera matrix_float3x3. Just wondering if it will impact the object detection since we need using static image instead of hardware device.
+
+
+# Requirment Analysis
+- Load video from mp4
+	- AVAssetReader
+- recording video once detect person(s)
+- Migrate video and bounding boxes
+	- Using ReplayKit to record?
+	- Using	AVFoundation by manage CVPixelBuffer and AVAssetWritter
+	- how about audio if original video contain??
+- save to photos
+	- Using photoKit
+
+
+# Design 
+- DataSource interface that can accept different video sources
+- DataOutput interface that can accept different managed source and output to mp4
+
+## Attention Need
+- audio of output video and AV sync?
+- coordinate mapping between source -> Vision -> output
+
+
+
+
+
