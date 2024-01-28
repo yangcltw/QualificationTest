@@ -36,6 +36,9 @@
 - [x] T1 - Design command interface to input data source
 - [x] T2 - move AVCaptureSession to be an implementation
 - [ ] T3 - Implement input data source by AVAssetReader
+	- Found not handling preview window
+	- Found the playing speed is not correct
+	- Found the size of preview window is not correct
 
 ## Record Video if detect person(s)
 - [ ] T4 - Using ReplayKit to record video
@@ -47,6 +50,9 @@
 ## Record Video using AVFondation
 
 
+
+# Retrospective
+- Same as every real project : No time to write test!
 
 
 

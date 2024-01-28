@@ -8,7 +8,7 @@ class ViewController: UIViewController {
 
   @IBOutlet var videoPreview: UIView!
 
-  var videoCapture: VideoCapture!
+  var videoCapture: DataSourceProtocol!
   var currentBuffer: CVPixelBuffer?
 
   let coreMLModel = MobileNetV2_SSDLite()
@@ -40,8 +40,10 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+      videoPreview.translatesAutoresizingMaskIntoConstraints = false
     setUpBoundingBoxViews()
-    setUpCamera()
+    //setUpCamera()
+    setUpUrl()
   }
 
   func setUpBoundingBoxViews() {
@@ -66,18 +68,45 @@ class ViewController: UIViewController {
     }
   }
 
+    func setUpUrl() {
+        var url = ""
+        if let filePath = Bundle.main.path(forResource: "face", ofType: "mp4") {
+            url = filePath
+        } else {
+            print("File not found")
+        }
+        videoCapture = VideoReader()
+        
+        videoCapture.delegate = self
+        let options: [String: Any] = ["url": url]
+        videoCapture.setUp(with: options) { success in
+            if success {
+                if let previewLayer = self.videoCapture.previewLayer {
+                  self.videoPreview.layer.addSublayer(previewLayer)
+                    self.resizePreviewLayer(previewLayer: previewLayer)
+                }
+                
+                // Add the bounding box layers to the UI, on top of the video preview.
+                for box in self.boundingBoxViews {
+                  box.addToLayer(self.videoPreview.layer)
+                }
+
+                // Once everything is set up, we can start capturing live video.
+                self.videoCapture.start()
+            }
+        }
+    }
   // TODO : refine
   func setUpCamera() {
     videoCapture = VideoCapture()
     videoCapture.delegate = self
-      var options = Dictionary<String, Any>()
-      options["sessionPreset"] = AVCaptureSession.Preset.hd1280x720
+      let options: [String: Any] = ["sessionPreset": AVCaptureSession.Preset.hd1280x720]
       videoCapture.setUp(with: options) { success in
       if success {
         // Add the video preview into the UI.
         if let previewLayer = self.videoCapture.previewLayer {
           self.videoPreview.layer.addSublayer(previewLayer)
-          self.resizePreviewLayer()
+            self.resizePreviewLayer(previewLayer: previewLayer)
         }
 
         // Add the bounding box layers to the UI, on top of the video preview.
@@ -99,6 +128,9 @@ class ViewController: UIViewController {
   func resizePreviewLayer() {
     videoCapture.previewLayer?.frame = videoPreview.bounds
   }
+    func resizePreviewLayer(previewLayer: CALayer?) {
+      previewLayer?.frame = videoPreview.bounds
+    }
 
   func predict(sampleBuffer: CMSampleBuffer) {
     if currentBuffer == nil, let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
@@ -149,10 +181,10 @@ class ViewController: UIViewController {
          NOTE: If you use a different .imageCropAndScaleOption, or a different
          video resolution, then you also need to change the math here!
         */
+        let width = self.videoPreview.bounds.width
+        let height = self.videoPreview.bounds.height
+        let offsetY = ( self.videoPreview.bounds.height - height) / 2
 
-        let width = view.bounds.width
-        let height = width * 16 / 9
-        let offsetY = (view.bounds.height - height) / 2
         let scale = CGAffineTransform.identity.scaledBy(x: width, y: height)
         let transform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -height - offsetY)
         let rect = prediction.boundingBox.applying(scale).applying(transform)
@@ -173,12 +205,26 @@ class ViewController: UIViewController {
   }
 }
 
-extension ViewController: VideoCaptureDelegate {
+extension ViewController: DataSourceProtocolDelegate {
+    func adjustVideoContentSize(with size: CGSize) {
+    
+        let screenSize = self.view.bounds.size
+        let viewSize = size
+        let scaleFactorWidth = screenSize.width / viewSize.width
+        let scaleFactorHeight = screenSize.height / viewSize.height
+        let scaleFactor = min(scaleFactorWidth, scaleFactorHeight)
+        self.videoPreview.frame.size = CGSizeMake(size.width*scaleFactor, size.height*scaleFactor)
+        self.videoPreview.center = self.view.center
+  
+        
+    }
+    
     func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any) {
         predict(sampleBuffer: didCaptureVideoFrame as! CMSampleBuffer)
     }
     
-  func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame sampleBuffer: CMSampleBuffer) {
-    predict(sampleBuffer: sampleBuffer)
-  }
+//  func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame sampleBuffer: CMSampleBuffer) {
+//    predict(sampleBuffer: sampleBuffer)
+//  }
 }
+
