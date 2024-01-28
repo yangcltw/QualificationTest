@@ -35,13 +35,14 @@
 
 - [x] T1 - Design command interface to input data source
 - [x] T2 - move AVCaptureSession to be an implementation
-- [ ] T3 - Implement input data source by AVAssetReader
+- [x] T3 - Implement input data source by AVAssetReader
 	- Found not handling preview window
 	- Found the playing speed is not correct
 	- Found the size of preview window is not correct
 
 ## Record Video if detect person(s)
-- [ ] T4 - Using ReplayKit to record video
+- [x] T4 - Using ReplayKit to record video
+- [ ] T4_1 - Using AVAssetWriter to record video
 - [ ] T5 - Saving to user album
 
 ## change to MVVM

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol VideoReaderDelegate: DataSourceProtocolDelegate {
-  func videoCapture(from source: VideoReader, didCaptureVideoFrame: Any)
+    func videoCapture(from source: VideoReader, didCaptureVideoFrame: Any)
 }
 
 class VideoReader: DataSourceProtocol {
@@ -51,11 +51,11 @@ class VideoReader: DataSourceProtocol {
         let outputSettings: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA)
         ]
-
+        
         readerOutput = AVAssetReaderTrackOutput(track: track!, outputSettings: outputSettings)
         reader.add(readerOutput)
         DispatchQueue.main.async {
-          completion(true)
+            completion(true)
         }
     }
     
@@ -68,7 +68,7 @@ class VideoReader: DataSourceProtocol {
                     let currentPTS = self.getPTS(from: sampleBuffer)
                     
                     DispatchQueue.main.async {
-                    self.delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
+                        self.delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
                         if let image = self.imageFromSampleBuffer(sampleBuffer) {
                             self.previewLayer?.contents = image.cgImage
                         }
@@ -79,7 +79,11 @@ class VideoReader: DataSourceProtocol {
                     }
                     previousPTS = currentPTS
                 }
-                
+            }
+            if self.reader.status == .completed {
+                self.delegate?.complete(with: 1)
+            } else {
+                self.delegate?.complete(with: 0)
             }
         }
     }
@@ -121,7 +125,7 @@ class VideoReader: DataSourceProtocol {
     }
     
     private func getVideoInfo(from track: AVAssetTrack) {
-       
+        
         let naturalSize = track.naturalSize // Resolution of the video
         let width = naturalSize.width // Width of the video
         let height = naturalSize.height // Height of the video

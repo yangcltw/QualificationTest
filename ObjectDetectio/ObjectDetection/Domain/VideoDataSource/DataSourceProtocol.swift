@@ -11,6 +11,7 @@ import QuartzCore
 protocol DataSourceProtocolDelegate: class {
     func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any)
     func adjustVideoContentSize(with size: CGSize)
+    func complete(with status: Int)
 }
 
 protocol DataSourceProtocol {
