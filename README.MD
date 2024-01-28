@@ -42,7 +42,9 @@
 
 ## Record Video if detect person(s)
 - [x] T4 - Using ReplayKit to record video
+	- [Reference](https://github.com/appcoda/ReplayKitDemo/blob/master/ScreenRecord/ViewController.swift) 
 - [ ] T4_1 - Using AVAssetWriter to record video
+	- [Reference](https://gist.github.com/kylehowells/31c40eea38209d751f4d4b02ba7dbf65) 
 - [ ] T5 - Saving to user album
 
 ## change to MVVM

@@ -22,6 +22,7 @@
 		CC5AFD482B662F9E00AEDD23 /* ReplayKitRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD472B662F9E00AEDD23 /* ReplayKitRecorder.swift */; };
 		CC5AFD4B2B66369E00AEDD23 /* HumanDetectionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */; };
 		CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */; };
+		CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		CC5AFD472B662F9E00AEDD23 /* ReplayKitRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayKitRecorder.swift; sourceTree = "<group>"; };
 		CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanDetectionUseCase.swift; sourceTree = "<group>"; };
 		CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			children = (
 				CC5AFD452B662D5D00AEDD23 /* DataOutputProtocol.swift */,
 				CC5AFD472B662F9E00AEDD23 /* ReplayKitRecorder.swift */,
+				CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */,
 			);
 			path = DataOutput;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				CC5AFD3A2B65512700AEDD23 /* DataSourceProtocol.swift in Sources */,
 				CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */,
 				7BCB411D21C3096100BFC4D0 /* ViewController.swift in Sources */,
+				CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */,
 				7BCB413221C309B900BFC4D0 /* BoundingBoxView.swift in Sources */,
 				CC5AFD2F2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage in Sources */,
 				CC5AFD482B662F9E00AEDD23 /* ReplayKitRecorder.swift in Sources */,

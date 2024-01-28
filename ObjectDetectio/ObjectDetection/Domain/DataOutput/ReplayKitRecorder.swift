@@ -9,15 +9,17 @@ import Foundation
 import ReplayKit
 
 class ReplayKitRecorder: DataOutputProtocol{
-    
-    
+    static let optionViewControllerKey = "viewcontroller"
     let recorder = RPScreenRecorder.shared()
     internal var isRecording = false
     var viewController: UIViewController?
     
-    func set(root viewController: UIViewController) {
-        self.viewController = viewController
+    func setUp(with options: [String : Any]) {
+        self.viewController = options[ReplayKitRecorder.optionViewControllerKey] as? UIViewController
     }
+//    func set(root viewController: UIViewController) {
+//        self.viewController = viewController
+//    }
     func startRecording() {
         guard recorder.isAvailable else {
             print("Recording is not available at this time.")
