@@ -16,6 +16,8 @@
 		7BCB413321C309B900BFC4D0 /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB412F21C309B900BFC4D0 /* VideoCapture.swift */; };
 		CC5AFD2F2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD2E2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage */; };
 		CC5AFD3A2B65512700AEDD23 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD392B65512700AEDD23 /* DataSourceProtocol.swift */; };
+		CC5AFD3D2B6569B500AEDD23 /* VideoReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD3C2B6569B500AEDD23 /* VideoReader.swift */; };
+		CC5AFD402B65CFA200AEDD23 /* face.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CC5AFD3F2B65CFA200AEDD23 /* face.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		7BCB412F21C309B900BFC4D0 /* VideoCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
 		CC5AFD2E2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = MobileNetV2_SSDLite.mlpackage; sourceTree = "<group>"; };
 		CC5AFD392B65512700AEDD23 /* DataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceProtocol.swift; sourceTree = "<group>"; };
+		CC5AFD3C2B6569B500AEDD23 /* VideoReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoReader.swift; sourceTree = "<group>"; };
+		CC5AFD3F2B65CFA200AEDD23 /* face.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = face.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,7 @@
 		7BCB411921C3096100BFC4D0 /* ObjectDetection */ = {
 			isa = PBXGroup;
 			children = (
+				CC5AFD3E2B65CF2400AEDD23 /* Resources */,
 				CC5AFD382B6550FB00AEDD23 /* Domain */,
 				CC5AFD372B6550F300AEDD23 /* Presentation */,
 				7BCB411A21C3096100BFC4D0 /* AppDelegate.swift */,
@@ -96,8 +101,17 @@
 			children = (
 				CC5AFD392B65512700AEDD23 /* DataSourceProtocol.swift */,
 				7BCB412F21C309B900BFC4D0 /* VideoCapture.swift */,
+				CC5AFD3C2B6569B500AEDD23 /* VideoReader.swift */,
 			);
 			path = InputDataSource;
+			sourceTree = "<group>";
+		};
+		CC5AFD3E2B65CF2400AEDD23 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CC5AFD3F2B65CFA200AEDD23 /* face.mp4 */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7BCB412521C3096200BFC4D0 /* LaunchScreen.storyboard in Resources */,
+				CC5AFD402B65CFA200AEDD23 /* face.mp4 in Resources */,
 				7BCB412221C3096200BFC4D0 /* Assets.xcassets in Resources */,
 				7BCB412021C3096100BFC4D0 /* Main.storyboard in Resources */,
 			);
@@ -178,6 +193,7 @@
 				CC5AFD2F2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage in Sources */,
 				7BCB411B21C3096100BFC4D0 /* AppDelegate.swift in Sources */,
 				7BCB413321C309B900BFC4D0 /* VideoCapture.swift in Sources */,
+				CC5AFD3D2B6569B500AEDD23 /* VideoReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
