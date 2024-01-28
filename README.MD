@@ -35,13 +35,16 @@
 
 - [x] T1 - Design command interface to input data source
 - [x] T2 - move AVCaptureSession to be an implementation
-- [ ] T3 - Implement input data source by AVAssetReader
+- [x] T3 - Implement input data source by AVAssetReader
 	- Found not handling preview window
 	- Found the playing speed is not correct
 	- Found the size of preview window is not correct
 
 ## Record Video if detect person(s)
-- [ ] T4 - Using ReplayKit to record video
+- [x] T4 - Using ReplayKit to record video
+	- [Reference](https://github.com/appcoda/ReplayKitDemo/blob/master/ScreenRecord/ViewController.swift) 
+- [ ] T4_1 - Using AVAssetWriter to record video
+	- [Reference](https://gist.github.com/kylehowells/31c40eea38209d751f4d4b02ba7dbf65) 
 - [ ] T5 - Saving to user album
 
 ## change to MVVM
