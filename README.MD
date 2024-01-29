@@ -90,11 +90,15 @@
 	- Current version mix all logic in ViewController
 ![Current Version](https://github.com/yangcltw/QualificationTest/blob/main/Current_Flow.png)
 <br>
+
 	- Better version split out the business logic out of ViewController. The use case keep preview window with orignal resolution so that the recording video could get better resolution according to setting(if need). The ViewCotroller get copy of preview window and scale to display on screen
 ![Better Version](https://github.com/yangcltw/QualificationTest/blob/main/Better_Flow.png)
 <br>
+
 	- The best way in my mind is manipulate pixel buffer directly and record it with same PTS(DTS). 
-![Best Version](https://github.com/yangcltw/QualificationTest/blob/main/Best_Flow.png)	
+![Best Version](https://github.com/yangcltw/QualificationTest/blob/main/Best_Flow.png)
+<br>
+
 ```
 func drawRectangleOnPixelBuffer(pixelBuffer: CVPixelBuffer) {
     let width = CVPixelBufferGetWidth(pixelBuffer)
