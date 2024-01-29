@@ -37,7 +37,7 @@ class VideoWriter: DataOutputProtocol {
         documentUrl = url.appendingPathComponent("recording.mp4")
         let fileManager = FileManager.default
         do {
-            try fileManager .removeItem(atPath: documentUrl.path)
+            try fileManager.removeItem(atPath: documentUrl.path)
         } catch {
             print("Could not clear temp file: \(error)")
         }

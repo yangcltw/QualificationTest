@@ -50,7 +50,15 @@
 
 > Found alernative soultion to record screen: [FlipBook](https://github.com/bgayman/FlipBook/tree/master)
 
-## Known issues 
+## Known issues from high to low (for user perspective instead of qualified test)
+
+- Only handle video data
+	- Only handle video data so the recorded mp4 is video only without audio data
+
+- UI issues
+	- can't pause the app except terminate it
+	- no localization
+
 - Video Playing Speed
 	- It is slower than original video because I use simple way to control the flow. I'm using delay between two frames. Howerver, this way is not considering the time of processing image. It can using global timer to determinate the frame is need to be display/delay/drop.
 	```
@@ -73,18 +81,13 @@
 	```
 - Performance issues
 	- There are some delays while recording video. Try to move VideoWriter to thread later
-- Only handle video data
+
+- Not handle iOS life Cycles
+	- only implement happy path: open the app -> load the video -> play and record new video -> play complete. App is not handle app enter background and back or some interrupt e.g. incoming call... 
+
 - ReplayKit crashes
 	- ReplayKit will crash if add timer to control human detection. Current implementation will clear original recorder and create new one. It is because new record needs new AVAssetWriter. ReplayKit will crash at closure of stopRecording because the last one is been release.
 
-- Not handle iOS life Cycles
-	- only implement happy path: open the app- > load the video -> play and record new video -> play complete. App is not handle app enter background and back or some interrupt e.g. incoming call... 
-
-- UI issues
-	- can't pause the app except terminate it
-	- no localization
-
-	
 ## Refactor
 - [x] T6 - Look at current architecture and refine.
 	- Current version mix all logic in ViewController
@@ -124,6 +127,8 @@ func drawRectangleOnPixelBuffer(pixelBuffer: CVPixelBuffer) {
 ```
 
 - [ ] T7 - Refactor & bug fix
+	- [ ] T7_1 TBD item - The recroding timer needed been discuss because for Requirement3, it need to recording 10s video once persion detect. The optional 6, it stop video after 5 sec after last person detected. It conflict if the person only show up 1 second and no more persion detect, the recorded video will be 6 sec ~ 7 sec. So I'm keeping the original implementation that reset 5 sec timer once person detected.
+	- [ ] T7_2 refactor
 
 # Retrospective
 - Same as every real project : No time to write test!

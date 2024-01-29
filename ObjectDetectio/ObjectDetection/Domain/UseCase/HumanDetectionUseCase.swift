@@ -14,27 +14,11 @@ class HumanDetectionUseCase {
     static let shared = HumanDetectionUseCase()
     var timer: Timer?
     var recorder: DataOutputProtocol?
-    
-    private func setUpReplayKitRecorder() {
-        recorder = ReplayKitRecorder()
-        // TODO: think if there is better way to do so
-        if let viewController = UIApplication.shared.windows.first?.rootViewController {
-            recorder?.setUp(with: [ReplayKitRecorder.optionViewControllerKey : viewController])
-        }
-    }
-    private  func setupAssetWriterRecorder() {
-        // TODO
-        guard let viewController = UIApplication.shared.windows.first?.rootViewController else{
-            print("setupAssetWriterRecorder fail")
-            return
-        }
-        
-        let options = [
-            VideoWriter.VideoWriterVideoWidthKey: (viewController as! ViewController).videoPreview.frame.size.width,
-            VideoWriter.VideoWriterVideoHeightKey: (viewController as! ViewController).videoPreview.frame.size.height,
-            VideoWriter.VideoWriterVideoRecordingViewKey: (viewController as! ViewController).videoPreview
-        ] as [String : Any]
-        recorder = VideoWriter.init(with: options)
+    var recordingView: UIView?
+    var rootViewController: UIViewController?
+    func set(_ recordingView: UIView, rootViewController: UIViewController) {
+        self.recordingView = recordingView
+        self.rootViewController = rootViewController
     }
     func detectObject(with predictions: [VNRecognizedObjectObservation]) {
         
@@ -48,12 +32,35 @@ class HumanDetectionUseCase {
                 recorder?.startRecording()
             }
         }
-        
     }
     
     // TODO: refine
     func dataSourceInterrupt(with reason: Int) {
         self.stopRecording()
+    }
+    
+    // MARK: - Private function
+    
+    private func setUpReplayKitRecorder() {
+        recorder = ReplayKitRecorder()
+        // TODO: think if there is better way to do so
+        if let viewController = UIApplication.shared.windows.first?.rootViewController {
+            recorder?.setUp(with: [ReplayKitRecorder.optionViewControllerKey : viewController])
+        }
+    }
+    private  func setupAssetWriterRecorder() {
+        // TODO
+        guard let recordingView = recordingView else{
+            print("setupAssetWriterRecorder fail")
+            return
+        }
+        
+        let options = [
+            VideoWriter.VideoWriterVideoWidthKey: recordingView.frame.size.width,
+            VideoWriter.VideoWriterVideoHeightKey: recordingView.frame.size.height,
+            VideoWriter.VideoWriterVideoRecordingViewKey: recordingView
+        ] as [String : Any]
+        recorder = VideoWriter.init(with: options)
     }
     
     private func startTimer() {

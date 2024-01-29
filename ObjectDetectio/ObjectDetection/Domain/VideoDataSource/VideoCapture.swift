@@ -10,7 +10,6 @@ public class VideoCapture: NSObject, DataSourceProtocol {
   var previewLayer: CALayer?
     
   weak var delegate: DataSourceProtocolDelegate?
-  //var previewLayer: AVCaptureVideoPreviewLayer?
 
   let captureSession = AVCaptureSession()
   let videoOutput = AVCaptureVideoDataOutput()

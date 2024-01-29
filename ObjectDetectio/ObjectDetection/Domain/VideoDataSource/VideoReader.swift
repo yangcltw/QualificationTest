@@ -13,6 +13,8 @@ protocol VideoReaderDelegate: DataSourceProtocolDelegate {
 }
 
 class VideoReader: DataSourceProtocol {
+    static let VideoReaderURLKey = "VideoReaderURLKey"
+    static let VideoReaderAssetKey = "VideoReaderAssetKey"
     var previewLayer: CALayer?
     var delegate: DataSourceProtocolDelegate?
     var reader: AVAssetReader!
@@ -21,12 +23,21 @@ class VideoReader: DataSourceProtocol {
     
     func setUp(with option: [String : Any], completion: @escaping (Bool) -> Void) {
         var urlString = ""
+        var asset: AVAsset?
         var track: AVAssetTrack?
         previewLayer = CALayer()
-        if let url = option["url"] as? String {
+        
+        if let url = option[VideoReader.VideoReaderURLKey] as? String {
             urlString = url
+            asset = AVAsset(url: URL(fileURLWithPath: urlString))
+        } else if let assetFromOptions = option[VideoReader.VideoReaderAssetKey] as? AVAsset {
+            asset = assetFromOptions
+        } else {
+            print("error setUP video reader")
         }
-        let asset = AVAsset(url: URL(fileURLWithPath: urlString))
+        guard let asset = asset else {
+            return;
+        }
         do {
             reader = try AVAssetReader(asset: asset)
         } catch {
