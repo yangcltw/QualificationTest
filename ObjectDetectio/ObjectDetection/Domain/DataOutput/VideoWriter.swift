@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import CoreGraphics
-
+import Photos
 
 class VideoWriter: DataOutputProtocol {
     static let VideoWriterVideoWidthKey = "VideoWriterVideoWidthKey"
@@ -79,9 +79,7 @@ class VideoWriter: DataOutputProtocol {
         isRecording = true
         displayLink = CADisplayLink(target: self, selector: #selector(tick))
         displayLink?.add(to: RunLoop.main, forMode: .common)
-        //        self.assetWriter.status
-        //        self.assetWriter.startWriting()
-        //        self.assetWriter.startSession(atSourceTime: CMTime.zero)
+
     }
     
     func stopRecording() {
@@ -91,8 +89,21 @@ class VideoWriter: DataOutputProtocol {
         self.videoWriterInput.markAsFinished()
         
         self.assetWriter.finishWriting(completionHandler: {
-            //completion()
             print("Finished writing video file")
+            PHPhotoLibrary.requestAuthorization { status in
+                // Return if unauthorized
+                guard status == .authorized else {
+                    print("Error saving video: unauthorized access")
+                    return
+                }
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.documentUrl as URL)
+                }) { success, error in
+                    if !success {
+                        print("Error saving video: \(String(describing: error))")
+                    }
+                }
+            }
             self.isRecording = false
         })
     }
@@ -101,14 +112,12 @@ class VideoWriter: DataOutputProtocol {
         let timestamp = self.displayLink?.timestamp
         
         if let previousFrameTime: CFTimeInterval = self.previousFrameTime {
-            //let image:UIImage = renderFrame()
             let render = UIGraphicsImageRenderer(size: recordingView.bounds.size ?? .zero)
             let image = render.image { (ctx) in
                 // Important to capture the presentation layer of the view for animation to be recorded
                 recordingView.layer.presentation()?.render(in: ctx.cgContext)
             }
             let timeDiff: CFTimeInterval = timestamp! - previousFrameTime
-            //print("timeDiff: \(timeDiff)")
             
             let presentationTime = CMTime(seconds: Double(timeDiff), preferredTimescale: 10000)
             
