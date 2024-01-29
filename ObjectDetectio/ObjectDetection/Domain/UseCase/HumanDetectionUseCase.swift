@@ -3,7 +3,6 @@
 //  ObjectDetection
 //
 //  Created by Bart Yang on 2024/1/28.
-//  Copyright © 2024 MachineThink. All rights reserved.
 //
 
 import Foundation
@@ -16,14 +15,14 @@ class HumanDetectionUseCase {
     var timer: Timer?
     var recorder: DataOutputProtocol?
     
-    func setUpReplayKitRecorder() {
+    private func setUpReplayKitRecorder() {
         recorder = ReplayKitRecorder()
         // TODO: think if there is better way to do so
         if let viewController = UIApplication.shared.windows.first?.rootViewController {
             recorder?.setUp(with: [ReplayKitRecorder.optionViewControllerKey : viewController])
         }
     }
-    func setupAssetWriterRecorder() {
+    private  func setupAssetWriterRecorder() {
         // TODO
         guard let viewController = UIApplication.shared.windows.first?.rootViewController else{
             print("setupAssetWriterRecorder fail")
@@ -44,7 +43,7 @@ class HumanDetectionUseCase {
             if recorder == nil {
                 setupAssetWriterRecorder()
             }
-            //self.startTimer()
+            self.startTimer()
             if(!recorder!.isRecording) {
                 recorder?.startRecording()
             }
@@ -54,27 +53,34 @@ class HumanDetectionUseCase {
     
     // TODO: refine
     func dataSourceInterrupt(with reason: Int) {
-        stopTimer()
-        if(recorder!.isRecording) {
-            recorder?.stopRecording()
-        }
-        
+        self.stopRecording()
     }
     
-    func startTimer() {
+    private func startTimer() {
         // Invalidate existing timer if it exists
         timer?.invalidate()
         
         // Start a new timer that fires every 5 seconds
         timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
             print("Timer fired!")
-            self.stopTimer()
-            self.recorder?.stopRecording()
+            self.stopRecording()
         }
     }
     
-    func stopTimer() {
+    private func stopTimer() {
         timer?.invalidate()
         timer = nil
     }
+    
+    private func stopRecording() {
+        stopTimer()
+        guard let recorder = recorder else {
+            return
+        }
+        if(recorder.isRecording) {
+            recorder.stopRecording()
+        }
+        self.recorder = nil
+    }
+    
 }

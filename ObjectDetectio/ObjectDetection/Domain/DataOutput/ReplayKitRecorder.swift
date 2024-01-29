@@ -17,13 +17,14 @@ class ReplayKitRecorder: DataOutputProtocol{
     func setUp(with options: [String : Any]) {
         self.viewController = options[ReplayKitRecorder.optionViewControllerKey] as? UIViewController
     }
-//    func set(root viewController: UIViewController) {
-//        self.viewController = viewController
-//    }
+
     func startRecording() {
         guard recorder.isAvailable else {
             print("Recording is not available at this time.")
             return
+        }
+        if recorder.isRecording {
+            stopRecording()
         }
         recorder.isMicrophoneEnabled = false
         
