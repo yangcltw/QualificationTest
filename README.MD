@@ -73,7 +73,7 @@
 	```
 - Performance issues
 	- There are some delays while recording video. Try to move VideoWriter to thread later
-
+- Only handle video data
 - ReplayKit crashes
 	- ReplayKit will crash if add timer to control human detection. Current implementation will clear original recorder and create new one. It is because new record needs new AVAssetWriter. ReplayKit will crash at closure of stopRecording because the last one is been release.
 
@@ -86,8 +86,40 @@
 
 	
 ## Refactor
-- [ ] T6 - Look at current architecture and refine.
-- [ ] T7 - TBD
+- [x] T6 - Look at current architecture and refine.
+	- Current version mix all logic in ViewController
+![Current Version](https://github.com/yangcltw/QualificationTest/blob/main/Current_Flow.png)
+<br>
+	- Better version split out the business logic out of ViewController. The use case keep preview window with orignal resolution so that the recording video could get better resolution according to setting(if need). The ViewCotroller get copy of preview window and scale to display on screen
+![Better Version](https://github.com/yangcltw/QualificationTest/blob/main/Better_Flow.png)
+<br>
+	- The best way in my mind is manipulate pixel buffer directly and record it with same PTS(DTS). 
+![Best Version](https://github.com/yangcltw/QualificationTest/blob/main/Best_Flow.png)	
+```
+func drawRectangleOnPixelBuffer(pixelBuffer: CVPixelBuffer) {
+    let width = CVPixelBufferGetWidth(pixelBuffer)
+    let height = CVPixelBufferGetHeight(pixelBuffer)
+    let colorSpace = CGColorSpaceCreateDeviceRGB()
+    let alphaInfo = CGImageAlphaInfo.premultipliedFirst.rawValue
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0)
+    guard let context = CGContext(data: CVPixelBufferGetBaseAddress(pixelBuffer),
+                                  width: width,
+                                  height: height,
+                                  bitsPerComponent: 8,
+                                  bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer),
+                                  space: colorSpace,
+                                  bitmapInfo: alphaInfo) else {
+        return
+    }
+
+    context.setFillColor(red: 1, green: 0, blue: 0, alpha: 1.0)
+    context.fill(CGRect(x: 0, y: 0, width: width, height: height))
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0)
+}
+```
+
+- [ ] T7 - Refactor & bug fix
 
 # Retrospective
 - Same as every real project : No time to write test!
