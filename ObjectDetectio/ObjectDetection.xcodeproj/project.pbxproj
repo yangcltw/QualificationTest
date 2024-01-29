@@ -23,6 +23,7 @@
 		CC5AFD4B2B66369E00AEDD23 /* HumanDetectionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */; };
 		CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */; };
 		CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */; };
+		CC7D054E2B67C93D006428EE /* VideoSourceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanDetectionUseCase.swift; sourceTree = "<group>"; };
 		CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
+		CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSourceSelectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +83,6 @@
 				CC5AFD382B6550FB00AEDD23 /* Domain */,
 				CC5AFD372B6550F300AEDD23 /* Presentation */,
 				7BCB411A21C3096100BFC4D0 /* AppDelegate.swift */,
-				7BCB411C21C3096100BFC4D0 /* ViewController.swift */,
 				CC5AFD2E2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage */,
 				7BCB412121C3096200BFC4D0 /* Assets.xcassets */,
 				7BCB412621C3096200BFC4D0 /* Info.plist */,
@@ -94,7 +95,8 @@
 		CC5AFD372B6550F300AEDD23 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				7BCB412E21C309B900BFC4D0 /* BoundingBoxView.swift */,
+				CC7D054C2B67C8D5006428EE /* VideoPlayingView */,
+				CC7D054B2B67C8B6006428EE /* SourceSelection */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -151,6 +153,23 @@
 				CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		CC7D054B2B67C8B6006428EE /* SourceSelection */ = {
+			isa = PBXGroup;
+			children = (
+				CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */,
+			);
+			path = SourceSelection;
+			sourceTree = "<group>";
+		};
+		CC7D054C2B67C8D5006428EE /* VideoPlayingView */ = {
+			isa = PBXGroup;
+			children = (
+				7BCB412E21C309B900BFC4D0 /* BoundingBoxView.swift */,
+				7BCB411C21C3096100BFC4D0 /* ViewController.swift */,
+			);
+			path = VideoPlayingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC7D054E2B67C93D006428EE /* VideoSourceSelectionViewController.swift in Sources */,
 				CC5AFD462B662D5D00AEDD23 /* DataOutputProtocol.swift in Sources */,
 				CC5AFD3A2B65512700AEDD23 /* DataSourceProtocol.swift in Sources */,
 				CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */,
@@ -314,7 +334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -369,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
