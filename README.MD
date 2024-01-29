@@ -40,22 +40,57 @@
 	- Found the playing speed is not correct
 	- Found the size of preview window is not correct
 
-## Record Video if detect person(s)
+## Record Video if detect person(s) and save to Photos
 - [x] T4 - Using ReplayKit to record video
 	- [Reference](https://github.com/appcoda/ReplayKitDemo/blob/master/ScreenRecord/ViewController.swift) 
 - [x] T4_1 - Using AVAssetWriter to record video
 	- [Reference](https://gist.github.com/kylehowells/31c40eea38209d751f4d4b02ba7dbf65) 
-- [ ] T5 - Saving to user album
+	- [result] (https://github.com/yangcltw/QualificationTest/blob/main/T4_1_recording_result.mp4)
+- [x] T5 - Saving to user album
 
-## change to MVVM
-- [ ] T6 - change to MVVM
+> Found alernative soultion to record screen: [FlipBook](https://github.com/bgayman/FlipBook/tree/master)
 
-## Record Video using AVFondation
+## Known issues 
+- Video Playing Speed
+	- It is slower than original video because I use simple way to control the flow. I'm using delay between two frames. Howerver, this way is not considering the time of processing image. It can using global timer to determinate the frame is need to be display/delay/drop.
+	```
+	while self.reader.status == .reading {
+		if let sampleBuffer = self.readerOutput.copyNextSampleBuffer(){
+			let currentPTS = self.getPTS(from: sampleBuffer)
+			let diffPTS = CMTimeGetSeconds(currentPTS) - CMTimeGetSeconds(previousPTS)
+			if (diffPTS) > 0 && (diffPTS) < 1 {
+				Thread.sleep(forTimeInterval: diffPTS)
+			}
+			DispatchQueue.main.async {
+				self.delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
+				if let image = self.imageFromSampleBuffer(sampleBuffer) {
+					self.previewLayer?.contents = image.cgImage
+				}
+			}
+			previousPTS = currentPTS
+		}
+	}
+	```
+- Performance issues
+	- There are some delays while recording video. Try to move VideoWriter to thread later
 
+- ReplayKit crashes
+	- ReplayKit will crash if add timer to control human detection. Current implementation will clear original recorder and create new one. It is because new record needs new AVAssetWriter. ReplayKit will crash at closure of stopRecording because the last one is been release.
 
+- Not handle iOS life Cycles
+	- only implement happy path: open the app- > load the video -> play and record new video -> play complete. App is not handle app enter background and back or some interrupt e.g. incoming call... 
+
+- UI issues
+	- can't pause the app except terminate it
+	- no localization
+
+	
+## Refactor
+- [ ] T6 - Look at current architecture and refine.
+- [ ] T7 - TBD
 
 # Retrospective
 - Same as every real project : No time to write test!
-
+- Naming : No time and teams to dicuss the naming
 
 

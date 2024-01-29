@@ -67,16 +67,17 @@ class VideoReader: DataSourceProtocol {
                 if let sampleBuffer = self.readerOutput.copyNextSampleBuffer(){
                     let currentPTS = self.getPTS(from: sampleBuffer)
                     
+                    let diffPTS = CMTimeGetSeconds(currentPTS) - CMTimeGetSeconds(previousPTS)
+                    if (diffPTS) > 0 && (diffPTS) < 1 {
+                        Thread.sleep(forTimeInterval: diffPTS)
+                    }
                     DispatchQueue.main.async {
                         self.delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
                         if let image = self.imageFromSampleBuffer(sampleBuffer) {
                             self.previewLayer?.contents = image.cgImage
                         }
                     }
-                    let diffPTS = CMTimeGetSeconds(currentPTS) - CMTimeGetSeconds(previousPTS)
-                    if (diffPTS) > 0 && (diffPTS) < 1 {
-                        Thread.sleep(forTimeInterval: diffPTS)
-                    }
+
                     previousPTS = currentPTS
                 }
             }
