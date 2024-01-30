@@ -14,7 +14,7 @@ class ReplayKitRecorder: DataOutputProtocol{
     internal var isRecording = false
     var viewController: UIViewController?
     
-    func setUp(with options: [String : Any]) {
+    func setup(with options: [String : Any]) {
         self.viewController = options[ReplayKitRecorder.optionViewControllerKey] as? UIViewController
     }
 

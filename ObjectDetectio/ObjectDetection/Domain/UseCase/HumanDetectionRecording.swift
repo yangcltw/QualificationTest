@@ -9,13 +9,14 @@ import Foundation
 import Vision
 import UIKit
 
-class HumanDetectionUseCase {
+class HumanDetectionRecording {
     
-    static let shared = HumanDetectionUseCase()
+    static let shared = HumanDetectionRecording()
     var timer: Timer?
     var recorder: DataOutputProtocol?
     var recordingView: UIView?
     var rootViewController: UIViewController?
+    
     func set(_ recordingView: UIView, rootViewController: UIViewController) {
         self.recordingView = recordingView
         self.rootViewController = rootViewController
@@ -26,6 +27,7 @@ class HumanDetectionUseCase {
             "person"}).count > 0) {
             if recorder == nil {
                 setupAssetWriterRecorder()
+                //setupReplayKitRecorder()
             }
             self.startTimer()
             if(!recorder!.isRecording) {
@@ -41,12 +43,12 @@ class HumanDetectionUseCase {
     
     // MARK: - Private function
     
-    private func setUpReplayKitRecorder() {
+    private func setupReplayKitRecorder() {
         recorder = ReplayKitRecorder()
         // TODO: think if there is better way to do so
-        if let viewController = UIApplication.shared.windows.first?.rootViewController {
-            recorder?.setUp(with: [ReplayKitRecorder.optionViewControllerKey : viewController])
-        }
+        
+        recorder?.setup(with: [ReplayKitRecorder.optionViewControllerKey : rootViewController])
+        
     }
     private  func setupAssetWriterRecorder() {
         // TODO

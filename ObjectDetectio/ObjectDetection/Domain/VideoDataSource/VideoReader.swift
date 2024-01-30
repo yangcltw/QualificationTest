@@ -26,7 +26,6 @@ class VideoReader: DataSourceProtocol {
         var asset: AVAsset?
         var track: AVAssetTrack?
         previewLayer = CALayer()
-        
         if let url = option[VideoReader.VideoReaderURLKey] as? String {
             urlString = url
             asset = AVAsset(url: URL(fileURLWithPath: urlString))
@@ -58,11 +57,9 @@ class VideoReader: DataSourceProtocol {
                 return
             }
         }
-        
         let outputSettings: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA)
         ]
-        
         readerOutput = AVAssetReaderTrackOutput(track: track!, outputSettings: outputSettings)
         reader.add(readerOutput)
         DispatchQueue.main.async {
@@ -84,11 +81,10 @@ class VideoReader: DataSourceProtocol {
                     }
                     DispatchQueue.main.async {
                         self.delegate?.videoCapture(from: self, didCaptureVideoFrame: sampleBuffer)
-                        if let image = self.imageFromSampleBuffer(sampleBuffer) {
+                        if let image = UIImage.imageFromSampleBuffer(sampleBuffer) {
                             self.previewLayer?.contents = image.cgImage
                         }
                     }
-
                     previousPTS = currentPTS
                 }
             }
@@ -104,38 +100,7 @@ class VideoReader: DataSourceProtocol {
         reader.cancelReading()
     }
     
-    
-    private func imageFromSampleBuffer(_ sampleBuffer: CMSampleBuffer) -> UIImage? {
-        // Get a CMSampleBuffer's Core Video image buffer for the media data
-        let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        
-        // Lock the base address of the pixel buffer
-        CVPixelBufferLockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-        
-        // Get the number of bytes per row for the pixel buffer
-        let baseAddress = CVPixelBufferGetBaseAddress(imageBuffer!)
-        
-        // Get the number of bytes per row for the pixel buffer
-        let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer!)
-        
-        // Create a device-dependent RGB color space
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        // Create a bitmap graphics context with the sample buffer data
-        let context = CGContext(data: baseAddress, width: CVPixelBufferGetWidth(imageBuffer!), height: CVPixelBufferGetHeight(imageBuffer!), bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
-        
-        // Create a Quartz image from the pixel data in the bitmap graphics context
-        let quartzImage = context!.makeImage()
-        
-        // Unlock the pixel buffer
-        CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-        
-        // Create an image object from the Quartz image
-        let image = UIImage(cgImage: quartzImage!)
-        
-        return image
-    }
-    
+    // MARK: - Private function
     private func getVideoInfo(from track: AVAssetTrack) {
         
         let naturalSize = track.naturalSize // Resolution of the video
@@ -147,7 +112,7 @@ class VideoReader: DataSourceProtocol {
         self.delegate?.adjustVideoContentSize(with: CGSizeMake(width, height))
     }
     
-    func getPTS(from sampleBuffer: CMSampleBuffer) -> CMTime {
+    private func getPTS(from sampleBuffer: CMSampleBuffer) -> CMTime {
         let pts = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
         return pts
     }
