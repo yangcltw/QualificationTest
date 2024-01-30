@@ -135,5 +135,6 @@ func drawRectangleOnPixelBuffer(pixelBuffer: CVPixelBuffer) {
 # Retrospective
 - Same as every real project : No time to write test!
 - Naming : No time and teams to dicuss the naming
+- No code review
 
 
