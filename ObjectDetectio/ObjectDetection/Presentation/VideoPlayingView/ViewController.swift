@@ -41,9 +41,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backButtonTitle = "Back"
         videoPreview.translatesAutoresizingMaskIntoConstraints = false
         setUpBoundingBoxViews()
-        HumanDetectionUseCase.shared.set(self.videoPreview, rootViewController: self)
+        HumanDetectionRecording.shared.set(self.videoPreview, rootViewController: self)
     }
     
     func setUpBoundingBoxViews() {
@@ -136,7 +137,6 @@ class ViewController: UIViewController {
                 for box in self.boundingBoxViews {
                     box.addToLayer(self.videoPreview.layer)
                 }
-                
                 // Once everything is set up, we can start capturing live video.
                 self.videoCapture?.start()
             }
@@ -158,7 +158,6 @@ class ViewController: UIViewController {
     func predict(sampleBuffer: CMSampleBuffer) {
         if currentBuffer == nil, let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             currentBuffer = pixelBuffer
-            
             // Get additional info from the camera.
             var options: [VNImageOption : Any] = [:]
             if let cameraIntrinsicMatrix = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
@@ -180,7 +179,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             if let results = request.results as? [VNRecognizedObjectObservation] {
                 self.show(predictions: results)
-                HumanDetectionUseCase.shared.detectObject(with: results)
+                HumanDetectionRecording.shared.detectObject(with: results)
             } else {
                 self.show(predictions: [])
             }
@@ -227,15 +226,7 @@ class ViewController: UIViewController {
             }
         }
     }
-}
-
-extension ViewController: DataSourceProtocolDelegate {
-    func complete(with status: Int) {
-        HumanDetectionUseCase.shared.dataSourceInterrupt(with: status)
-    }
-    
     func adjustVideoContentSize(with size: CGSize) {
-        
         let screenSize = self.view.bounds.size
         let viewSize = size
         let scaleFactorWidth = screenSize.width / viewSize.width
@@ -243,17 +234,17 @@ extension ViewController: DataSourceProtocolDelegate {
         let scaleFactor = min(scaleFactorWidth, scaleFactorHeight)
         self.videoPreview.frame.size = CGSizeMake(size.width*scaleFactor, size.height*scaleFactor)
         self.videoPreview.center = self.view.center
-        
-        
+    }
+}
+
+extension ViewController: DataSourceProtocolDelegate {
+    func complete(with status: Int) {
+        HumanDetectionRecording.shared.dataSourceInterrupt(with: status)
     }
     
     func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any) {
         predict(sampleBuffer: didCaptureVideoFrame as! CMSampleBuffer)
     }
-    
-    //  func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame sampleBuffer: CMSampleBuffer) {
-    //    predict(sampleBuffer: sampleBuffer)
-    //  }
 }
 
 extension ViewController: RPPreviewViewControllerDelegate {

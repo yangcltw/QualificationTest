@@ -9,7 +9,7 @@ import Foundation
 
 protocol DataOutputProtocol{
     var isRecording: Bool {get}
-    func setUp(with options: [String : Any])
+    func setup(with options: [String : Any])
     func startRecording()
     func stopRecording()
 }

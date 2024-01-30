@@ -20,10 +20,11 @@
 		CC5AFD402B65CFA200AEDD23 /* face.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CC5AFD3F2B65CFA200AEDD23 /* face.mp4 */; };
 		CC5AFD462B662D5D00AEDD23 /* DataOutputProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD452B662D5D00AEDD23 /* DataOutputProtocol.swift */; };
 		CC5AFD482B662F9E00AEDD23 /* ReplayKitRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD472B662F9E00AEDD23 /* ReplayKitRecorder.swift */; };
-		CC5AFD4B2B66369E00AEDD23 /* HumanDetectionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */; };
+		CC5AFD4B2B66369E00AEDD23 /* HumanDetectionRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4A2B66369E00AEDD23 /* HumanDetectionRecording.swift */; };
 		CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */; };
 		CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */; };
 		CC7D054E2B67C93D006428EE /* VideoSourceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */; };
+		CCCC18972B6881330067973F /* ObjectDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC18962B6881330067973F /* ObjectDetection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,10 +43,11 @@
 		CC5AFD3F2B65CFA200AEDD23 /* face.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = face.mp4; sourceTree = "<group>"; };
 		CC5AFD452B662D5D00AEDD23 /* DataOutputProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataOutputProtocol.swift; sourceTree = "<group>"; };
 		CC5AFD472B662F9E00AEDD23 /* ReplayKitRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayKitRecorder.swift; sourceTree = "<group>"; };
-		CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanDetectionUseCase.swift; sourceTree = "<group>"; };
+		CC5AFD4A2B66369E00AEDD23 /* HumanDetectionRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanDetectionRecording.swift; sourceTree = "<group>"; };
 		CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSourceSelectionViewController.swift; sourceTree = "<group>"; };
+		CCCC18962B6881330067973F /* ObjectDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ObjectDetection.swift; path = ../../../../../../Desktop/ObjectDetection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +144,8 @@
 		CC5AFD492B66367F00AEDD23 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
-				CC5AFD4A2B66369E00AEDD23 /* HumanDetectionUseCase.swift */,
+				CC5AFD4A2B66369E00AEDD23 /* HumanDetectionRecording.swift */,
+				CCCC18962B6881330067973F /* ObjectDetection.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			files = (
 				CC7D054E2B67C93D006428EE /* VideoSourceSelectionViewController.swift in Sources */,
 				CC5AFD462B662D5D00AEDD23 /* DataOutputProtocol.swift in Sources */,
+				CCCC18972B6881330067973F /* ObjectDetection.swift in Sources */,
 				CC5AFD3A2B65512700AEDD23 /* DataSourceProtocol.swift in Sources */,
 				CC5AFD4E2B664DB800AEDD23 /* Utilities.swift in Sources */,
 				7BCB411D21C3096100BFC4D0 /* ViewController.swift in Sources */,
@@ -255,7 +259,7 @@
 				CC5AFD2F2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage in Sources */,
 				CC5AFD482B662F9E00AEDD23 /* ReplayKitRecorder.swift in Sources */,
 				7BCB411B21C3096100BFC4D0 /* AppDelegate.swift in Sources */,
-				CC5AFD4B2B66369E00AEDD23 /* HumanDetectionUseCase.swift in Sources */,
+				CC5AFD4B2B66369E00AEDD23 /* HumanDetectionRecording.swift in Sources */,
 				7BCB413321C309B900BFC4D0 /* VideoCapture.swift in Sources */,
 				CC5AFD3D2B6569B500AEDD23 /* VideoReader.swift in Sources */,
 			);

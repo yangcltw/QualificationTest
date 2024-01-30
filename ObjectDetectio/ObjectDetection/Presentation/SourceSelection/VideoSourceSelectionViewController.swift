@@ -3,7 +3,6 @@
 //  ObjectDetection
 //
 //  Created by Bart Yang on 2024/1/29.
-//  Copyright © 2024 MachineThink. All rights reserved.
 //
 
 import Foundation
@@ -56,21 +55,17 @@ class VideoSourceSelectionViewController: UIViewController, PHPickerViewControll
         stackView.addArrangedSubview(cameraSourceButton)
         stackView.addArrangedSubview(inAppSourceButton)
         stackView.addArrangedSubview(photosSourceButton)
-        
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     deinit {
         
     }
     
     override func viewDidLoad() {
-        //        stackView.frame = self.view.frame
-        //        view.addSubview(stackView)
-        // Disable Dark Mode for this view controller
+        self.title = "Please select video source"
+        navigationItem.backButtonTitle = "Back"
         overrideUserInterfaceStyle = .light
         self.view.backgroundColor = .white
     }

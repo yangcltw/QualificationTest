@@ -8,7 +8,7 @@
 import Foundation
 import QuartzCore
 
-protocol DataSourceProtocolDelegate: class {
+protocol DataSourceProtocolDelegate: AnyObject{
     func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any)
     func adjustVideoContentSize(with size: CGSize)
     func complete(with status: Int)
