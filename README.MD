@@ -1,4 +1,9 @@
 
+# System Requirment
+- iOS 14 above
+- Xcode 15.2
+- Please change to your testing bundle id and development team
+
 # Clone the sample code from github after getting assignment
 
 - The sample code is using AVCaptureSession to get image from iphone camera，and transfer datat to  AVCaptureVideoDataOutput (https://developer.apple.com/documentation/avfoundation/capture_setup/setting_up_a_capture_session)
