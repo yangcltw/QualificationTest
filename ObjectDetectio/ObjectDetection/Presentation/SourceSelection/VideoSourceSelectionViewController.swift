@@ -75,6 +75,9 @@ class VideoSourceSelectionViewController: UIViewController, PHPickerViewControll
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as? ViewController {
             self.navigationController?.pushViewController(vc, animated: true) {
+                
+                
+                
                 vc.setUpCamera()
             }
         }

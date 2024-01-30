@@ -135,7 +135,10 @@ func drawRectangleOnPixelBuffer(pixelBuffer: CVPixelBuffer) {
 	- [ ] T7_1 TBD item - The recroding timer needed been discuss because for Requirement3, it need to recording 10s video once persion detect. The optional 6, it stop video after 5 sec after last person detected. It conflict if the person only show up 1 second and no more persion detect, the recorded video will be 6 sec ~ 7 sec. So I'm keeping the original implementation that reset 5 sec timer once person detected.
 	- [x] T7_2 refactor - Add source selection
 	- [x] T7_3 refactor - Bugfix: source from camera can't be recorded. Refactor: code clean up
-	- [ ] T7_4 refactor - 
+	- [ ] T7_4 refactor 
+		- Change architecture to better one. There are two bugs
+		1. The result view can't show on screen
+		2. not recorded the video
 
 # Retrospective
 - Same as every real project : No time to write test!

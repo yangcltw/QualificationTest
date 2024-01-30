@@ -6,38 +6,18 @@ import UIKit
 import Vision
 
 class ViewController: UIViewController {
-    
-    
+
     @IBOutlet var videoPreview: UIView!
     var videoCapture: DataSourceProtocol?
     var currentBuffer: CVPixelBuffer?
     
-    let coreMLModel = MobileNetV2_SSDLite()
-    
-    lazy var visionModel: VNCoreMLModel = {
-        do {
-            return try VNCoreMLModel(for: coreMLModel.model)
-        } catch {
-            fatalError("Failed to create VNCoreMLModel: \(error)")
-        }
-    }()
-    
-    lazy var visionRequest: VNCoreMLRequest = {
-        let request = VNCoreMLRequest(model: visionModel, completionHandler: {
-            [weak self] request, error in
-            self?.processObservations(for: request, error: error)
-        })
-        
-        // NOTE: If you use another crop/scale option, you must also change
-        // how the BoundingBoxView objects get scaled when they are drawn.
-        // Currently they assume the full input image is used.
-        request.imageCropAndScaleOption = .scaleFill
-        return request
-    }()
     
     let maxBoundingBoxViews = 10
     var boundingBoxViews = [BoundingBoxView]()
     var colors: [String: UIColor] = [:]
+    
+    
+    var objectDetection: ObjectDetection?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +33,7 @@ class ViewController: UIViewController {
         }
         
         // The label names are stored inside the MLModel's metadata.
-        guard let userDefined = coreMLModel.model.modelDescription.metadata[MLModelMetadataKey.creatorDefinedKey] as? [String: String],
+        guard let userDefined = ObjectDetector.coreMLModel.model.modelDescription.metadata[MLModelMetadataKey.creatorDefinedKey] as? [String: String],
               let allLabels = userDefined["classes"] else {
             fatalError("Missing metadata")
         }
@@ -77,25 +57,28 @@ class ViewController: UIViewController {
             print("File not found")
         }
         videoCapture = VideoReader()
-        
-        videoCapture?.delegate = self
         let options: [String: Any] = [VideoReader.VideoReaderURLKey: url]
-        videoCapture?.setUp(with: options) { success in
-            if success {
-                if let previewLayer = self.videoCapture?.previewLayer {
-                    self.videoPreview.layer.addSublayer(previewLayer)
-                    self.resizePreviewLayer(previewLayer: previewLayer)
-                }
-                
-                // Add the bounding box layers to the UI, on top of the video preview.
-                for box in self.boundingBoxViews {
-                    box.addToLayer(self.videoPreview.layer)
-                }
-                
-                // Once everything is set up, we can start capturing live video.
-                self.videoCapture?.start()
-            }
-        }
+        objectDetection = ObjectDetection(with: VideoReader(), dataSourceOptions: options, rootViewController: self)
+        objectDetection?.delegate = self
+        //self.videoPreview.addSubview(objectDetection!.videoPreview)
+//        videoCapture?.delegate = self
+//        let options: [String: Any] = [VideoReader.VideoReaderURLKey: url]
+//        videoCapture?.setUp(with: options) { success in
+//            if success {
+//                if let previewLayer = self.videoCapture?.previewLayer {
+//                    self.videoPreview.layer.addSublayer(previewLayer)
+//                    self.resizePreviewLayer(previewLayer: previewLayer)
+//                }
+//                
+//                // Add the bounding box layers to the UI, on top of the video preview.
+//                for box in self.boundingBoxViews {
+//                    box.addToLayer(self.videoPreview.layer)
+//                }
+//                
+//                // Once everything is set up, we can start capturing live video.
+//                self.videoCapture?.start()
+//            }
+//        }
     }
     func setUpPhtos(with asset: AVAsset) {
         videoCapture = VideoReader()
@@ -155,36 +138,36 @@ class ViewController: UIViewController {
         previewLayer?.frame = videoPreview.bounds
     }
     
-    func predict(sampleBuffer: CMSampleBuffer) {
-        if currentBuffer == nil, let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-            currentBuffer = pixelBuffer
-            // Get additional info from the camera.
-            var options: [VNImageOption : Any] = [:]
-            if let cameraIntrinsicMatrix = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
-                options[.cameraIntrinsics] = cameraIntrinsicMatrix
-            }
-            
-            let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: options)
-            do {
-                try handler.perform([self.visionRequest])
-            } catch {
-                print("Failed to perform Vision request: \(error)")
-            }
-            
-            currentBuffer = nil
-        }
-    }
+//    func predict(sampleBuffer: CMSampleBuffer) {
+//        if currentBuffer == nil, let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+//            currentBuffer = pixelBuffer
+//            // Get additional info from the camera.
+//            var options: [VNImageOption : Any] = [:]
+//            if let cameraIntrinsicMatrix = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
+//                options[.cameraIntrinsics] = cameraIntrinsicMatrix
+//            }
+//            
+//            let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: options)
+//            do {
+//                try handler.perform([self.visionRequest])
+//            } catch {
+//                print("Failed to perform Vision request: \(error)")
+//            }
+//            
+//            currentBuffer = nil
+//        }
+//    }
     
-    func processObservations(for request: VNRequest, error: Error?) {
-        DispatchQueue.main.async {
-            if let results = request.results as? [VNRecognizedObjectObservation] {
-                self.show(predictions: results)
-                HumanDetectionRecording.shared.detectObject(with: results)
-            } else {
-                self.show(predictions: [])
-            }
-        }
-    }
+//    func processObservations(for request: VNRequest, error: Error?) {
+//        DispatchQueue.main.async {
+//            if let results = request.results as? [VNRecognizedObjectObservation] {
+//                self.show(predictions: results)
+//                HumanDetectionRecording.shared.detectObject(with: results)
+//            } else {
+//                self.show(predictions: [])
+//            }
+//        }
+//    }
     
     func show(predictions: [VNRecognizedObjectObservation]) {
         for i in 0..<boundingBoxViews.count {
@@ -243,12 +226,24 @@ extension ViewController: DataSourceProtocolDelegate {
     }
     
     func videoCapture(from source: DataSourceProtocol, didCaptureVideoFrame: Any) {
-        predict(sampleBuffer: didCaptureVideoFrame as! CMSampleBuffer)
+        ObjectDetector().predict(sampleBuffer: didCaptureVideoFrame as! CMSampleBuffer){ results in
+            self.show(predictions: results)
+        }
     }
 }
 
 extension ViewController: RPPreviewViewControllerDelegate {
     func previewControllerDidFinish(_ previewController: RPPreviewViewController) {
         dismiss(animated: true)
+    }
+}
+
+extension ViewController: ObjectDetectionDelegate {
+    func update(_ view: UIView) {
+        // TODO: copy view to display
+        let image = UIImage.image(from: view)
+
+        self.videoPreview.layer.contents = image.cgImage
+        self.adjustVideoContentSize(with: view.frame.size)
     }
 }

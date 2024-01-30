@@ -25,6 +25,7 @@
 		CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */; };
 		CC7D054E2B67C93D006428EE /* VideoSourceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */; };
 		CCCC18972B6881330067973F /* ObjectDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC18962B6881330067973F /* ObjectDetection.swift */; };
+		CCCC18BD2B6916B30067973F /* ObjectDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC18BC2B6916B30067973F /* ObjectDetector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		CC5AFD4F2B6654D400AEDD23 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		CC7D054D2B67C93D006428EE /* VideoSourceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSourceSelectionViewController.swift; sourceTree = "<group>"; };
 		CCCC18962B6881330067973F /* ObjectDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ObjectDetection.swift; path = ../../../../../../Desktop/ObjectDetection.swift; sourceTree = "<group>"; };
+		CCCC18BC2B6916B30067973F /* ObjectDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				CC5AFD4D2B664DB800AEDD23 /* Utilities.swift */,
+				CCCC18BC2B6916B30067973F /* ObjectDetector.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				CC5AFD502B6654D400AEDD23 /* VideoWriter.swift in Sources */,
 				7BCB413221C309B900BFC4D0 /* BoundingBoxView.swift in Sources */,
 				CC5AFD2F2B64DBBB00AEDD23 /* MobileNetV2_SSDLite.mlpackage in Sources */,
+				CCCC18BD2B6916B30067973F /* ObjectDetector.swift in Sources */,
 				CC5AFD482B662F9E00AEDD23 /* ReplayKitRecorder.swift in Sources */,
 				7BCB411B21C3096100BFC4D0 /* AppDelegate.swift in Sources */,
 				CC5AFD4B2B66369E00AEDD23 /* HumanDetectionRecording.swift in Sources */,
